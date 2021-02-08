@@ -11,7 +11,7 @@ SAMPLE_RATE = 200
 SAMPLE_INTERVAL = 0.01
 
 class GhostImageScan:
-
+    
     def __init__(self,resolution,pixel_size):
 
         self.res = resolution
