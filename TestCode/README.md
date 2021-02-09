@@ -1,33 +1,45 @@
+# Usage
+
 This suite is for carrying out basic single pixel imaging/ ghost imaging on the TI DLP2000EVM.
 
 The scripts are classes which need to be imported, either in the Python terminal or in another Python script, on the BeagleBone.
 
 Example usage of the GhostImageScan module:
 
-Python terminal
-===========================================================
+```python
 >>> from GhostImageScan import GhostImageScan
+```
 
 Creating an instance of an imaging experiment:
->>> foo = GhostImageScan(32,10) <-- 32x32 resolution with pixel size of 10
-
+```python
+>>> foo = GhostImageScan(32,10) # 32x32 resolution with pixel size of 10
+```
 Run a designated number of iterations of ghost imaging:
->>> foo.run(500) <-- display 500 patterns
-
+```python
+>>> foo.run(500) # display and measure from 500 patterns
+```
 The run function can be called any number of times, since image output is saved in the object:
 
+```python
 >>> foo.run(500)
+```
 followed by
+```python
 >>> foo.run(500)
+```
 is equivalent to
+```python
 >>> foo.run(500+500)
+```
 
 Printing result:
 The result is printed as a list of numbers, image display on the BeagleBone was not implemented.
 To see the result displayed as a plot, first the printed list is copied onto a personal computer running Python with matplotlib and numpy.
 The list is cast into an array, reshaped and plotted using the imshow function from pyplot.
 
+```python
 >>> foo.printResultAsList()
+```
 prints to the terminal for example
 [0.0033434, 0.15, ... ]
 
