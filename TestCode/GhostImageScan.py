@@ -10,6 +10,8 @@ IMAGE_HEIGHT = 360
 SAMPLE_RATE = 200
 SAMPLE_INTERVAL = 0.01
 
+WHITE_PIX_VAL = 4294967295
+
 class GhostImageScan:
     
     def __init__(self,resolution,pixel_size):
@@ -50,9 +52,7 @@ class GhostImageScan:
 
             # display pattern
             system("i2cset -y 2 0x1b 0xa3 0x00 0x00 0x00 0x01 i") # freeze framebufffer
-            for k in range(self.pixel_size):
-                for m in range(self.pixel_size):
-                    fb[y_start+k:y_end+k:self.pixel_size, x_start+m:x_end+m:self.pixel_size] = disp_pattern * 4294967295
+            fb[y_start:y_end, x_start:x_end] = np.repeat( np.repeat( disp_pattern * WHITE_PIX_VAL, self.pixel_size, axis=0), self.pixel_size, axis=1)
             system("i2cset -y 2 0x1b 0xa3 0x00 0x00 0x00 0x00 i") # unfreeze framebuffer
 
             # get readings from pattern
@@ -68,9 +68,7 @@ class GhostImageScan:
             inv_pattern = -pattern
             disp_pattern = (inv_pattern + 1) / 2
             system("i2cset -y 2 0x1b 0xa3 0x00 0x00 0x00 0x01 i") # freeze framebufffer
-            for k in range(self.pixel_size):
-                for m in range(self.pixel_size):
-                    fb[y_start+k:y_end+k:self.pixel_size, x_start+m:x_end+m:self.pixel_size] = disp_pattern * 4294967295
+            fb[y_start:y_end, x_start:x_end] = np.repeat( np.repeat( disp_pattern * WHITE_PIX_VAL, self.pixel_size, axis=0), self.pixel_size, axis=1)
             system("i2cset -y 2 0x1b 0xa3 0x00 0x00 0x00 0x00 i") # unfreeze framebuffer
 
             # get readings from inverse pattern
