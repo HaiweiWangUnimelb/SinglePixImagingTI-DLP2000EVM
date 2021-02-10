@@ -3,4 +3,4 @@ Python 3 scripts for BeagleBone Black single pixel imaging. Done as part of the 
 
 The user is encouraged to examine the code in the /TestCode folder to create their own, improved single pixel imaging scripts.
 
-The [Instructions](Instructions.md) document details the setup used to run the code.
+The [Instructions](Instructions.md) detail the setup used to run the code.
