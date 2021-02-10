@@ -33,8 +33,8 @@ is equivalent to
 ```
 
 Printing result:
-The result is printed as a list of numbers, image display on the BeagleBone was not implemented.
-To see the result displayed as a plot, first the printed list is copied onto a personal computer running Python with matplotlib and numpy.
+The result is printed as a list of numbers. Image display on the BeagleBone was not implemented,
+to see the result displayed as a plot, first the printed list is copied onto a personal computer running Python with matplotlib and numpy.
 The list is cast into an array, reshaped and plotted using the imshow function from pyplot.
 
 ```python
