@@ -32,10 +32,7 @@ is equivalent to
 >>> foo.run(500+500)
 ```
 
-Printing result:
-The result is printed as a list of numbers. Image display on the BeagleBone was not implemented,
-to see the result displayed as a plot, first the printed list is copied onto a personal computer running Python with matplotlib and numpy.
-The list is cast into an array, reshaped and plotted using the imshow function from pyplot.
+Viewing result:
 
 ```python
 >>> foo.printResultAsList()
@@ -43,6 +40,13 @@ The list is cast into an array, reshaped and plotted using the imshow function f
 prints to the terminal for example
 [0.0033434, 0.15, ... ]
 
+Another way of visualising the result is to use the function which creates a jpeg image in the current directory:
+
+```python
+>>> foo.resultToImage("myResult.jpg")
+```
+
+This option requires [pillow](https://pillow.readthedocs.io/en/stable/) to be installed in the Python environment.
 
 The HadamardBasisScan module is almost exactly the same as the GhostImaging module. Due to the difference in their algorithm, the basis scan
 does not require any arguments to its run() function and the run() function only needs to be called once.
