@@ -25,8 +25,12 @@ class HadamardBasisScan:
             print("Pixel size does not divide both image height and width")
 
         self.result = np.zeros((self.res,self.res))
+
+        self.time_taken = 1
                 
-    def run(self,waitTime = 0.07, benchmark = False):
+    def run(self,waitTime = 0.07):
+
+        start_time = time.time()
         
         print("Running...")
         
@@ -88,6 +92,8 @@ class HadamardBasisScan:
         
         print("Finished!")
 
+        self.time_taken = time.time() - start_time
+
     def printResultAsList(self):
 
         print(list(self.result.flatten()))
@@ -120,4 +126,10 @@ class HadamardBasisScan:
                 pixels[x,y] = (color,color,color)
 
         im.save(filename, "JPEG")
+
+    def printLastRunStatistics(self):
+
+        print(f"Total time taken: {self.time_taken:.3f} seconds")
+        print(f"Number of patterns displayed: {self.res**2 * 2}")
+        print(f"Average framerate: {self.res**2 * 2 / self.time_taken: .2f}")
         
