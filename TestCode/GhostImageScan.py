@@ -4,17 +4,26 @@ from os import system
 import time
 
 PIN_IN = "AIN0"
-IMAGE_WIDTH = 640
-IMAGE_HEIGHT = 360
+IMAGE_WIDTH = 640 # pixels
+IMAGE_HEIGHT = 360 # pixels
 
-SAMPLE_RATE = 200
-SAMPLE_INTERVAL = 0.01
+SAMPLE_RATE = 200 # Hz
+SAMPLE_INTERVAL = 0.01 # seconds
 
 WHITE_PIX_VAL = 4294967295
 
 class GhostImageScan:
     
     def __init__(self,resolution,pixel_size):
+        """
+        Parameters:
+
+            resolution - an int greater than 0.
+            pixel_size - an int greater than 0 and divides both 640 and 360,
+                         resolution*pixel_size <= 360.
+
+        Creates a GhostImageScan Object with the given parameters.
+        """
 
         self.res = resolution
         self.pixel_size = pixel_size
@@ -27,6 +36,14 @@ class GhostImageScan:
         self.M = 0
                 
     def run(self,N_iters, waitTime = 0.07, benchmark = False):
+        """
+        parameters:
+            N_iters - an int greater than 0
+        kwarg:
+            waitTime - Time between pattern display and bucket detector reading.
+
+        Runs the imaging experiment on a setup for N_iters number of patterns, improving upon the current result.
+        """
 
         start_time = time.time()
         
@@ -98,6 +115,13 @@ class GhostImageScan:
         print(list(self.result.flatten()))
 
     def resultToCSV(self, filename):
+        """
+        parameters
+
+            filename - a string ending in .csv.
+
+        Creates a csv file in the current directory with the given filename.
+        """
         
         if filename.split('.')[-1] != "csv":
             print("Error: output file format name is not csv")
@@ -106,7 +130,14 @@ class GhostImageScan:
         np.savetxt(filename, self.result.flatten(), delimiter=',', fmt='%s')
 
     def resultToImage(self, filename):
+        """
+        parameters
 
+            filename - a string ending in .jpg.
+
+        Creates a jpeg image with size resolution by resolution that represents the
+        result of the experiment.
+        """
         try:
             from PIL import Image
         except:

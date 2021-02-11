@@ -4,18 +4,29 @@ from scipy.linalg import hadamard
 import time
 from os import system
 
-PIN_IN = "AIN0"
-IMAGE_WIDTH = 640
-IMAGE_HEIGHT = 360
+# Constants
 
-SAMPLE_RATE = 200
-SAMPLE_INTERVAL = 0.01
+PIN_IN = "AIN0"
+IMAGE_WIDTH = 640 # pixels
+IMAGE_HEIGHT = 360 # pixels
+
+SAMPLE_RATE = 200 # Hz
+SAMPLE_INTERVAL = 0.01 # seconds
 
 WHITE_PIX_VAL = 4294967295
 
 class HadamardBasisScan:
 
     def __init__(self,resolution,pixel_size):
+        """
+        Parameters:
+
+            resolution - an int greater than 0 and is a power of 2
+            pixel_size - an int greater than 0 and divides both 640 and 360,
+                         resolution*pixel_size <= 360.
+
+        Creates a HadamardBasisScan object with the given parameters.
+        """
 
         self.res = resolution
         self.pixel_size = pixel_size
@@ -28,6 +39,13 @@ class HadamardBasisScan:
         self.time_taken = 1
                 
     def run(self,waitTime = 0.07):
+        """
+        kwargs:
+            waitTime - Time between pattern display and bucket detector reading.
+
+        Runs the imaging experiment on a setup for a determined number of patterns given by
+        N_patterns = resolution**2.
+        """
 
         start_time = time.time()
         
@@ -98,6 +116,13 @@ class HadamardBasisScan:
         print(list(self.result.flatten()))
 
     def resultToCSV(self, filename):
+        """
+        parameters
+
+            filename - a string ending in .csv.
+
+        Creates a csv file in the current directory with the given filename.
+        """
         
         if filename.split('.')[-1] != "csv":
             print("Error: output file format name is not csv")
@@ -106,6 +131,14 @@ class HadamardBasisScan:
         np.savetxt(filename, self.result.flatten(), delimiter=',', fmt='%s')
 
     def resultToImage(self, filename):
+        """
+        parameters
+
+            filename - a string ending in .jpg.
+
+        Creates a jpeg image with size resolution by resolution that represents the
+        result of the experiment.
+        """
 
         try:
             from PIL import Image
