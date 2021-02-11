@@ -3,7 +3,6 @@ import numpy as np
 from scipy.linalg import hadamard
 import time
 from os import system
-from PIL import Image
 
 PIN_IN = "AIN0"
 IMAGE_WIDTH = 640
@@ -107,6 +106,13 @@ class HadamardBasisScan:
         np.savetxt(filename, self.result.flatten(), delimiter=',', fmt='%s')
 
     def resultToImage(self, filename):
+
+        try:
+            from PIL import Image
+        except:
+            print("Error importing PIL, maybe it hasn't been installed? \n To install, search: pillow python.")
+            return
+        
 
         if filename.split('.')[-1] != "jpg":
             print("Error: output file format name is not jpg")

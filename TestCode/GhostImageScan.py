@@ -45,7 +45,7 @@ class GhostImageScan:
         y_start = int( ( IMAGE_HEIGHT - self.res*self.pixel_size )/ 2)
         y_end = int(IMAGE_HEIGHT - ( IMAGE_HEIGHT - self.res*self.pixel_size )/ 2)
 
-        patterns = ( np.random.randint(2, size=(self.M,self.res**2)) * 2 )- 1
+        patterns = ( np.random.randint(2, size=(N_iters,self.res**2)) * 2 )- 1
 
         # Data acquisition loop
 
@@ -106,6 +106,12 @@ class GhostImageScan:
         np.savetxt(filename, self.result.flatten(), delimiter=',', fmt='%s')
 
     def resultToImage(self, filename):
+
+        try:
+            from PIL import Image
+        except:
+            print("Error importing PIL, maybe it hasn't been installed? \n To install, search: pillow python.")
+            return
 
         if filename.split('.')[-1] != "jpg":
             print("Error: output file format name is not jpg")
