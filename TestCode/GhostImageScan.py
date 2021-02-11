@@ -96,5 +96,26 @@ class GhostImageScan:
             print("Error: output file format name is not csv")
             return None
 
-        np.savetxt(filename, self.result.flatten(), delimiter=',', fmt='%s')        
+        np.savetxt(filename, self.result.flatten(), delimiter=',', fmt='%s')
+
+    def resultToImage(self, filename):
+
+        if filename.split('.')[-1] != "jpg":
+            print("Error: output file format name is not jpg")
+            return None
+        
+        
+        im = Image.new("RGB", (self.res,self.res))
+        pixels = im.load()
+
+        max_val = np.amax(self.result)
+        min_val = np.amin(self.result)
+        val_range = max_val - min_val
+        
+        for x in range(self.res):
+            for y in range(self.res):
+                color = int( 255 * ( (self.result[y,x] - min_val ) / val_range ) ) 
+                pixels[x,y] = (color,color,color)
+
+        im.save(filename, "JPEG")
             
