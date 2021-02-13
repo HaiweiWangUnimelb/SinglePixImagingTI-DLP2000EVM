@@ -13,7 +13,8 @@ IMAGE_HEIGHT = 360 # pixels
 SAMPLE_RATE = 200 # Hz
 SAMPLE_INTERVAL = 0.01 # seconds
 
-WHITE_PIX_VAL = 4294967295
+WHITE_PIX_VAL = 256**4 - 1 # Usually written as (255, 255, 255, 255), where each entry is an 8-bit integer. Instead of a tuple
+                           # a 32-bit integer equivalent of the tuple is used to be able to perform scalar multiplication of arrays.
 
 class HadamardBasisScan:
 
@@ -52,8 +53,9 @@ class HadamardBasisScan:
         print("Running...")
         
         # Initialisation
-        fb = np.memmap("/dev/fb0", dtype = "uint32", mode = "w+", shape = (IMAGE_HEIGHT, IMAGE_WIDTH))
-        fb[:] = 0
+        fb = np.memmap("/dev/fb0", dtype = "uint32",
+                       mode = "w+", shape = (IMAGE_HEIGHT, IMAGE_WIDTH)) # numpy function which implements memory access features from c. Maps an array of the same size as the framebuffer directly to the framebuffer.
+        fb[:] = 0 # Set the screen black
         ADC.setup()
 
         samples_per_reading = int(SAMPLE_INTERVAL*SAMPLE_RATE)
@@ -75,11 +77,14 @@ class HadamardBasisScan:
 
             # display pattern
             system("i2cset -y 2 0x1b 0xa3 0x00 0x00 0x00 0x01 i") # freeze framebufffer
-            fb[y_start:y_end, x_start:x_end] = np.repeat( np.repeat( disp_pattern * WHITE_PIX_VAL, self.pixel_size, axis=0), self.pixel_size, axis=1)
+            fb[y_start:y_end, x_start:x_end] = np.repeat( np.repeat(
+                disp_pattern * WHITE_PIX_VAL, self.pixel_size, axis=0), self.pixel_size, axis=1)
+                # use the numpy repeat function on both dimensions of the array to convert each entry into a block of the same values
+                # of size pixel_size x pixel_size. Fast way of upscaling the resolution of a low resolution pattern.
             system("i2cset -y 2 0x1b 0xa3 0x00 0x00 0x00 0x00 i") # unfreeze framebuffer
 
             # get readings from pattern
-            time.sleep(waitTime)
+            time.sleep(waitTime) # wait for voltage to stabilise. It was found that if waitTime is too low, the image visibility is poor.
             readings = []
             for i in range(samples_per_reading):
                 readings.append(ADC.read(PIN_IN))
